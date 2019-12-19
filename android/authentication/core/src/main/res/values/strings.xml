@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Authentication</string>
+
+    <!-- Password Dialog -->
+    <string name="dialog_password_title">Protection Password</string>
+    <string name="dialog_password_info_initialize">In order to orderly secure the key storage you need to set a password to protect it:</string>
+    <string name="dialog_password_info_unlock">Please enter the password in order to unlock the key storage:</string>
+    <string name="dialog_password_error_wrong">Wrong password!</string>
+    <string name="dialog_password_error_match">The passwords do not match!</string>
+    <string name="dialog_password_error_format">The password is too short (min. 4 characters)</string>
+    <string name="dialog_password_hint_password">Password</string>
+    <string name="dialog_password_hint_password_verify">Verify</string>
+</resources>

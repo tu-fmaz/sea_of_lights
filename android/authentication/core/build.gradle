@@ -1,0 +1,58 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
+    // enforceUniquePackageName false
+
+    defaultConfig {
+        applicationId "core.authentication"
+        minSdkVersion 16
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //testCompile 'junit:junit:4.12'
+    //compile 'com.google.android.gms:play-services:8.4.0'
+    // Supports Android 4.0.3 and later (API level 15)
+    // Supports Android 2.1 and later (API level 7), but not optimal for later Android versions.
+    // If you only plan on supporting Android 4.0.3 and up, you don't need to include this.
+    //compile 'com.journeyapps:zxing-android-legacy:3.2.0@aar'
+    // Convenience library to launch the scanning and encoding Activities.
+    // It automatically picks the best scanning library from the above two, depending on the
+    // Android version and what is available.
+    //compile 'com.journeyapps:zxing-android-integration:3.2.0@aar'
+    //compile 'com.journeyapps:zxing-android-embedded:3.2.0@aar'
+    //compile 'com.google.zxing:core:3.2.1'
+    //compile 'com.android.support:appcompat-v7:23.1.1'
+    implementation 'com.android.support:support-v4:27.1.1'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.madgag.spongycastle:core:1.54.0.0'
+    implementation 'com.madgag.spongycastle:prov:1.54.0.0'
+    implementation 'com.madgag.spongycastle:pkix:1.54.0.0'
+    implementation 'com.fidesmo:nordpol-android:0.1.23'
+    implementation project(':primitives')
+    implementation project(':library')
+    implementation project(':network')
+    implementation project(':wifiservice')
+    implementation project(':keyverifier')
+    implementation project(':org.simalliance.openmobileapi')
+}

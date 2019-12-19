@@ -1,0 +1,195 @@
+#
+# Default settings for the simulation
+##########################
+# Time indications below are usually in seconds: 
+# 3600s == 1h / 43200s == 12h / 86400s == 24h
+#########################
+
+## Scenario settings
+Scenario.name = authentication_scenario
+Scenario.simulateConnections = true
+Scenario.updateInterval = 1
+#0.1
+Scenario.endTime = 43200
+
+# Define 6 different node groups
+Scenario.nrofHostGroups = 1
+
+
+## Interface-specific settings:
+# type : which interface class the interface belongs to
+# For different types, the sub-parameters are interface-specific
+# For SimpleBroadcastInterface, the parameters are:
+# transmitSpeed : transmit speed of the interface (bytes per second)
+# transmitRange : range of the interface (meters)
+
+# "Bluetooth" interface for all nodes
+btInterface.type = SimpleBroadcastInterface
+# Transmit speed of 2 Mbps = 250kBps
+btInterface.transmitSpeed = 250k
+btInterface.transmitRange = 10
+
+
+# High speed, long range, interface for group 4
+highspeedInterface.type = SimpleBroadcastInterface
+highspeedInterface.transmitSpeed = 10M
+highspeedInterface.transmitRange = 1000
+
+
+## Group-specific settings:
+# groupID : Group's identifier. Used as the prefix of host names
+# nrofHosts: number of hosts in the group
+# movementModel: movement model of the hosts (valid class name from movement package)
+# waitTime: minimum and maximum wait times (seconds) after reaching destination
+# speed: minimum and maximum speeds (m/s) when moving on a path
+# bufferSize: size of the message buffer (bytes)
+# router: router used to route messages (valid class name from routing package)
+# activeTimes: Time intervals when the nodes in the group are active (start1, end1, start2, end2, ...)
+# msgTtl : TTL (minutes) of the messages created by this host group, default=infinite
+
+## Group and movement model specific settings
+# pois: Points Of Interest indexes and probabilities (poiIndex1, poiProb1, poiIndex2, poiProb2, ... )
+#       for ShortestPathMapBasedMovement
+# okMaps : which map nodes are OK for the group (map file indexes), default=all
+#          for all MapBasedMovent models
+# routeFile: route's file path - for MapRouteMovement
+# routeType: route's type - for MapRouteMovement
+# only to define an additional interface e.g. wlan
+# Group.interface2 = highspeedInterface
+
+# Common settings for all groups
+Group.movementModel = RandomWaypoint
+Group.router = EpidemicRouter
+Group.bufferSize = 20M
+Group.waitTime = 0, 120
+# All nodes have the bluetooth interface
+Group.nrofInterfaces = 1
+Group.interface1 = btInterface
+# Message TTL of 15 minutes 
+Group.msgTtl = 15
+
+
+# Define new application
+authApp.type = AuthenticationApplication
+authApp.destinationRange = 0,59
+authApp.steps = 1.0
+authApp.degree = 3
+authApp.keyparm =false
+authApp.runs = 4
+
+# Set auth app for all nodes
+Group.nrofApplications = 1
+Group.application1 = authApp
+
+# group1 (first response) specific settings
+Group1.groupID = pf
+# Walking speeds
+Group1.speed = 0.5, 1.5
+# Number of hosts in the group 25 
+Group1.nrofHosts = 60
+
+# group2 (injured population) specific settings
+#Group2.groupID = pi
+# Walking speeds
+#Group2.speed = 0.5, 1.5
+# Number of hosts in the group 40
+#Group2.nrofHosts = 15
+
+# another group of pedestrians
+#Group3.groupID = w
+# Walking speeds
+#Group3.speed = 0.5, 1.5
+# Number of hosts in the group 60
+#Group3.nrofHosts = 30
+
+
+##################################################
+# The next lines are for the creation of messages with ONE
+##################################################
+## Message creation parameters
+# How many event generators 
+ Events.nrof = 1
+# Class of the first event generator
+ Events1.class = MessageEventGenerator
+# (following settings are specific for the MessageEventGenerator class)
+# Creation interval in seconds (one new message every 25 to 35 seconds)
+ Events1.interval = 18000,18500
+# Message sizes (500kB - 1MB)
+ Events1.size = 10k,20k
+# range of message source/destination addresses HERE ALSO NUMBER OF HOSTS
+ Events1.hosts = 0,59
+# Message ID prefix
+ Events1.prefix = M
+
+
+## Movement model settings
+# seed for movement models' pseudo random number generator (default = 0)
+MovementModel.rngSeed = 1
+# World's size for Movement Models without implicit size (width, height; meters)
+MovementModel.worldSize = 3000, 3000
+# How long time to move hosts in the world before real simulation
+MovementModel.warmup = 0
+
+## Map based movement -movement model specific settings
+MapBasedMovement.nrofMapFiles = 4
+
+MapBasedMovement.mapFile1 = data/roads.wkt
+MapBasedMovement.mapFile2 = data/main_roads.wkt
+MapBasedMovement.mapFile3 = data/pedestrian_paths.wkt
+MapBasedMovement.mapFile4 = data/shops.wkt
+
+## Reports - all report names have to be valid report classes
+
+# how many reports to load
+Report.nrofReports = 0
+# length of the warm up period (simulated seconds)
+Report.warmup = 0
+# default directory of reports (can be overridden per Report with output setting)
+Report.reportDir = reports/
+# Report classes to load
+Report.report1 = ContactTimesReport
+Report.report2 = ConnectivityONEReport
+Report.report3 = ContactsPerHourReport
+Report.report4 = CreatedMessagesReport
+Report.report5 = DeliveredMessagesReport
+Report.report6 = DistanceDelayReport
+Report.report7 = EncountersVSUniqueEncountersReport
+Report.report8 = InterContactTimesReport
+Report.report9 = MessageDelayReport
+Report.report10 = MessageDeliveryReport
+Report.report11 = MessageReport
+Report.report12 = EfficientMessageStatsReport
+Report.report13 = NodeDensityReport
+Report.report14 = TotalContactTimeReport
+Report.report15 = TotalEncountersReport
+Report.report16 = UniqueEncountersReport
+Report.report17 = BufferOccupancyReport
+Report.report18 = MessageStatsReport
+Report.report19 = AuthAppReporter
+
+## Default settings for some routers settings
+ProphetRouter.secondsInTimeUnit = 30
+SprayAndWaitRouter.nrofCopies = 1
+SprayAndWaitRouter.binaryMode = true
+
+## Optimization settings -- these affect the speed of the simulation
+## see World class for details.
+Optimization.cellSizeMult = 5
+Optimization.randomizeUpdateOrder = false
+
+
+## GUI settings
+
+# GUI underlay image settings
+GUI.UnderlayImage.fileName = data/helsinki_underlay.png
+# Image offset in pixels (x, y)
+GUI.UnderlayImage.offset = 64, 20
+# Scaling factor for the image
+GUI.UnderlayImage.scale = 4.75
+# Image rotation (radians)
+GUI.UnderlayImage.rotate = -0.015
+
+# how many events to show in the log panel (default = 30)
+GUI.EventLogPanel.nrofEvents = 100
+# Regular Expression log filter (see Pattern-class from the Java API for RE-matching details)
+#GUI.EventLogPanel.REfilter = .*p[1-9]<->p[1-9]$
